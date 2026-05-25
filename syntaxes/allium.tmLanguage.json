@@ -1,0 +1,203 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Allium",
+  "scopeName": "source.allium",
+  "fileTypes": ["allium"],
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#annotations" },
+    { "include": "#declarations" },
+    { "include": "#clause-keywords" },
+    { "include": "#field-names" },
+    { "include": "#builtin-types" },
+    { "include": "#entity-references" },
+    { "include": "#language-constants" },
+    { "include": "#duration-literals" },
+    { "include": "#collection-methods" },
+    { "include": "#lifecycle-methods" },
+    { "include": "#strings" },
+    { "include": "#backtick-literals" },
+    { "include": "#numbers" },
+    { "include": "#operators" }
+  ],
+  "repository": {
+
+    "comments": {
+      "match": "--.*$",
+      "name": "comment.line.double-dash.allium"
+    },
+
+    "annotations": {
+      "patterns": [
+        {
+          "match": "(@(?:invariant|guarantee))\\s+([A-Z][A-Za-z0-9]*)",
+          "captures": {
+            "1": { "name": "entity.name.tag.allium" },
+            "2": { "name": "entity.name.class.allium" }
+          }
+        },
+        {
+          "match": "@guidance\\b",
+          "name": "entity.name.tag.allium"
+        }
+      ]
+    },
+
+    "declarations": {
+      "patterns": [
+        {
+          "comment": "external entity Name",
+          "match": "\\b(external\\s+entity)\\s+([A-Z][A-Za-z0-9]*)",
+          "captures": {
+            "1": { "name": "storage.type.allium" },
+            "2": { "name": "entity.name.type.allium" }
+          }
+        },
+        {
+          "comment": "variant Name : BaseEntity",
+          "match": "\\b(variant)\\s+([A-Z][A-Za-z0-9]*)\\s*:\\s*([A-Z][A-Za-z0-9]*)",
+          "captures": {
+            "1": { "name": "storage.type.allium" },
+            "2": { "name": "entity.name.type.allium" },
+            "3": { "name": "entity.name.type.allium" }
+          }
+        },
+        {
+          "comment": "default EntityType instanceName",
+          "match": "\\b(default)\\s+([A-Z][A-Za-z0-9]*)\\s+([a-z_][a-z_0-9]*)",
+          "captures": {
+            "1": { "name": "storage.type.allium" },
+            "2": { "name": "entity.name.type.allium" },
+            "3": { "name": "variable.other.allium" }
+          }
+        },
+        {
+          "comment": "deferred Name or Name.method",
+          "match": "\\b(deferred)\\s+([A-Z][A-Za-z0-9]*(?:\\.[a-z_][a-z_0-9]*)?)",
+          "captures": {
+            "1": { "name": "storage.type.allium" },
+            "2": { "name": "entity.name.type.allium" }
+          }
+        },
+        {
+          "comment": "open question",
+          "match": "\\b(open\\s+question)\\b",
+          "name": "storage.type.allium"
+        },
+        {
+          "comment": "anonymous block keywords",
+          "match": "\\b(given|config|use)\\b",
+          "name": "storage.type.allium"
+        },
+        {
+          "comment": "named declaration keywords — PascalCase name gets entity.name.type",
+          "match": "\\b(rule|entity|actor|surface|contract|value|enum|invariant)\\s+([A-Z][A-Za-z0-9]*)",
+          "captures": {
+            "1": { "name": "storage.type.allium" },
+            "2": { "name": "entity.name.type.allium" }
+          }
+        }
+      ]
+    },
+
+    "clause-keywords": {
+      "patterns": [
+        {
+          "match": "\\b(when|requires|ensures|let|for|if|else|facing|context|exposes|provides|related|contracts|demands|fulfils|timeout|identified_by|within|with|where|transitions_to|transitions|becomes|terminal|as)\\b",
+          "name": "keyword.control.allium"
+        },
+        {
+          "match": "\\b(and|or|not|implies|in|exists)\\b",
+          "name": "keyword.operator.word.allium"
+        }
+      ]
+    },
+
+    "field-names": {
+      "comment": "snake_case field/relationship/derived names before a colon — clause keywords are already consumed before this runs",
+      "match": "\\b([a-z_][a-z_0-9]*)(?=\\s*:)",
+      "name": "entity.other.attribute-name.allium"
+    },
+
+    "builtin-types": {
+      "patterns": [
+        {
+          "comment": "generic compound types: Set<T>, List<T>, Sequence<T>",
+          "match": "\\b(Set|List|Sequence)<([A-Za-z][A-Za-z0-9]*)\\??>",
+          "captures": {
+            "1": { "name": "support.type.allium" },
+            "2": { "name": "support.type.allium" }
+          }
+        },
+        {
+          "match": "\\b(String|Integer|Decimal|Boolean|Timestamp|Duration|Any)\\b",
+          "name": "support.type.allium"
+        }
+      ]
+    },
+
+    "entity-references": {
+      "comment": "Any PascalCase name used as a type reference — catches all user-defined entity/rule/surface names not already consumed by declarations",
+      "match": "\\b[A-Z][A-Za-z0-9]*\\b",
+      "name": "support.type.allium"
+    },
+
+    "language-constants": {
+      "match": "\\b(null|true|false|now|this|_)\\b",
+      "name": "constant.language.allium"
+    },
+
+    "duration-literals": {
+      "comment": "24.hours, 7.days, 30.seconds, 1.hour — only after a digit",
+      "match": "(?<=\\d)\\.(seconds?|minutes?|hours?|days?|weeks?|months?|years?)\\b",
+      "name": "keyword.other.unit.allium"
+    },
+
+    "collection-methods": {
+      "comment": ".count .any .all .first .last .unique .add .remove",
+      "match": "\\.(count|any|all|first|last|unique|add|remove)\\b",
+      "name": "support.function.allium"
+    },
+
+    "lifecycle-methods": {
+      "comment": ".created .destroyed",
+      "match": "\\.(created|destroyed)\\b",
+      "name": "support.function.allium"
+    },
+
+    "strings": {
+      "begin": "\"",
+      "end": "\"",
+      "name": "string.quoted.double.allium",
+      "patterns": [
+        { "match": "\\\\.", "name": "constant.character.escape.allium" }
+      ]
+    },
+
+    "backtick-literals": {
+      "begin": "`",
+      "end": "`",
+      "name": "string.other.backtick.allium"
+    },
+
+    "numbers": {
+      "match": "\\b\\d[\\d_]*\\b",
+      "name": "constant.numeric.allium"
+    },
+
+    "operators": {
+      "patterns": [
+        { "match": "=>", "name": "keyword.operator.arrow.allium" },
+        { "match": "->", "name": "keyword.operator.arrow.allium" },
+        { "match": "\\?\\?", "name": "keyword.operator.allium" },
+        { "match": "\\?\\.", "name": "keyword.operator.allium" },
+        { "match": "(!=|>=|<=)", "name": "keyword.operator.comparison.allium" },
+        { "match": "(?<![=!<>])=(?![=>])", "name": "keyword.operator.assignment.allium" },
+        { "match": "(?<![<>])[<>](?![=])", "name": "keyword.operator.comparison.allium" },
+        { "match": "\\|", "name": "keyword.operator.union.allium" },
+        { "match": "\\?(?!\\.)", "name": "keyword.operator.optional.allium" },
+        { "match": "[+\\-*\\/]", "name": "keyword.operator.arithmetic.allium" }
+      ]
+    }
+  }
+}

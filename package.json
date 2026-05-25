@@ -1,0 +1,26 @@
+{
+  "name": "allium-syntax",
+  "publisher": "01max",
+  "displayName": "Allium Syntax",
+  "description": "Syntax highlighting for Allium specification files (.allium)",
+  "version": "0.1.0",
+  "engines": { "vscode": "^1.74.0" },
+  "categories": ["Other"],
+  "contributes": {
+    "languages": [
+      {
+        "id": "allium",
+        "aliases": ["Allium", "allium"],
+        "extensions": [".allium"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "allium",
+        "scopeName": "source.allium",
+        "path": "./syntaxes/allium.tmLanguage.json"
+      }
+    ]
+  }
+}
