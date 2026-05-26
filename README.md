@@ -26,4 +26,4 @@ Files with the `.allium` extension are automatically detected and highlighted.
 
 ## License
 
-MIT
+[MIT](LICENSE.md)
