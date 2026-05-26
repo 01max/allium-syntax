@@ -6,6 +6,12 @@
   "version": "0.1.0",
   "engines": { "vscode": "^1.74.0" },
   "categories": ["Other"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/01max/allium-syntax"
+  },
+  "license": "MIT",
+  "icon": "logo-allium.png",
   "contributes": {
     "languages": [
       {
